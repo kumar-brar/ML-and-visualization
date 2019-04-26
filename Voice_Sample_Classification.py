@@ -1,13 +1,12 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-##import seaborn as sns
-##%matplotlib inline
 from sklearn import metrics
 from sklearn.svm import SVC
 from sklearn.metrics import classification_report,confusion_matrix
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.model_selection import train_test_split
+from sklearn.model_selection import GridSearchCV
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -51,5 +50,20 @@ print(metrics.accuracy_score(y_test,y_predict))
 
 print(confusion_matrix(y_test,y_predict))
 print(classification_report(y_test,y_predict))
+
+##We can also make use of GridSearch and check whether it can improve the
+##accuracy of our model
+
+param_grid = {'C': [0.1,1,10,100], 'gamma': [1,0.1,0.01,0.001]}
+
+grid = GridSearchCV(SVC(),param_grid,refit=True,verbose=2)
+grid.fit(X_train,y_train)
+grid_predictions = grid.predict(X_test)
+
+print('Accuracy Score:')
+print(metrics.accuracy_score(y_test,grid_predictions))
+
+
+
 
 
